@@ -15,9 +15,10 @@ object TheGame {
 
 
   def generateNumberString(length: Int): String = {
-    if (length > 10)
-      throw new RuntimeException("Can't generate string longer than 10 symbols")
-    val l = Random.shuffle(List(1,2,3,4,5,6,7,8,9,0))
+    val symbols = List(0,1,2,3,4,5,6,7,8,9)
+    if (symbols.size < length)
+      throw new RuntimeException("Too long number")
+    val l = Random.shuffle(symbols)
     l.take(length).foldRight("")((c,str) => c + str)
   }
 
