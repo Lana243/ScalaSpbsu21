@@ -11,6 +11,34 @@ sealed trait IntList {
   def ::(elem: Int): IntList = ???
 }
 
+case object IntNil extends IntList {
+  override def head: Int = undef
+
+  override def tail: IntList = IntNil
+
+  override def drop(n: Int): IntList = IntNil
+
+  override def take(n: Int): IntList = IntNil
+
+  override def map(f: Int => Int): IntList = IntNil
+
+  override def ::(elem: Int): IntList = IntCons(elem, IntNil)
+}
+
+case class IntCons(IntHead: Int, IntTail: IntList) extends IntList {
+  override def head: Int = IntHead
+
+  override def tail: IntList = IntTail
+
+  override def drop(n: Int): IntList = ???
+
+  override def take(n: Int): IntList = ???
+
+  override def map(f: Int => Int): IntList = ???
+
+  override def ::(elem: Int): IntList = IntCons(elem, head :: tail)
+}
+
 object IntList {
   def undef: Nothing = throw new UnsupportedOperationException("operation is undefined")
   def fromSeq(seq: Seq[Int]): IntList = ???
