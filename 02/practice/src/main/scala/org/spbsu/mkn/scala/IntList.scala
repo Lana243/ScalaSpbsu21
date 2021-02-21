@@ -1,6 +1,5 @@
 package org.spbsu.mkn.scala
 
-import org.spbsu.mkn.scala
 import org.spbsu.mkn.scala.IntList._
 
 sealed trait IntList {
@@ -32,7 +31,7 @@ case class IntCons(IntHead: Int, IntTail: IntList) extends IntList {
 
 object IntList {
   def undef: Nothing = throw new UnsupportedOperationException("operation is undefined")
-  def fromSeq(seq: Seq[Int]): IntList = if (seq.isEmpty) scala.IntNil else seq.head :: fromSeq(seq.tail)
+  def fromSeq(seq: Seq[Int]): IntList = if (seq.isEmpty) IntNil else seq.head :: fromSeq(seq.tail)
   def sum(intList: IntList): Int      = foldLeft(intList, 0)((m, n) => m + n)
   def size(intList: IntList): Int     = intList match {
                                                 case IntNil => 0
