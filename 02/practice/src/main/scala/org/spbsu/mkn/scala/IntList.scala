@@ -20,13 +20,11 @@ case object IntNil extends IntList {
   override def ::(elem: Int): IntList = IntCons(elem, IntNil)
 }
 
-case class IntCons(IntHead: Int, IntTail: IntList) extends IntList {
-  override def head: Int = IntHead
-  override def tail: IntList = IntTail
-  override def drop(n: Int): IntList = if (n <= 0) IntHead :: IntTail else IntTail.drop(n - 1)
-  override def take(n: Int): IntList = if (n <= 0) IntNil else IntHead :: IntTail.take(n - 1)
-  override def map(f: Int => Int): IntList = f(IntHead) :: IntTail.map(f)
-  override def ::(elem: Int): IntList = IntCons(elem, IntHead :: IntTail)
+case class IntCons(head: Int, tail: IntList) extends IntList {
+  override def drop(n: Int): IntList = if (n <= 0) head :: tail else tail.drop(n - 1)
+  override def take(n: Int): IntList = if (n <= 0) IntNil else head :: tail.take(n - 1)
+  override def map(f: Int => Int): IntList = f(head) :: tail.map(f)
+  override def ::(elem: Int): IntList = IntCons(elem, head :: tail)
 }
 
 object IntList {
