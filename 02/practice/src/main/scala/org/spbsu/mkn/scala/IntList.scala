@@ -32,14 +32,14 @@ case class IntCons(IntHead: Int, IntTail: IntList) extends IntList {
 object IntList {
   def undef: Nothing = throw new UnsupportedOperationException("operation is undefined")
   def fromSeq(seq: Seq[Int]): IntList = if (seq.isEmpty) IntNil else seq.head :: fromSeq(seq.tail)
-  def sum(intList: IntList): Int      = foldLeft(intList, 0)((m, n) => m + n)
-  def size(intList: IntList): Int     = intList match {
-                                                case IntNil => 0
-                                                case IntCons(_, xs) => 1 + size(xs)
+  def sum(intList: IntList): Int      = intList match {
+                                                case IntNil => undef
+                                                case _ => foldLeft(intList, 0)((m, n) => m + n)
                                               }
+  def size(intList: IntList): Int     = foldLeft(intList, 0)((m, _) => m + 1)
   // extra task: implement sum using foldLeft
   def foldLeft(intList: IntList, ini: Int)(f: (Int, Int) => Int): Int = intList match {
-                                                                                case IntNil => undef
+                                                                                case IntNil => ini
                                                                                 case IntCons(x, IntNil) => f(ini, x)
                                                                                 case IntCons(x, xs) => foldLeft(xs, f(ini, x))(f)
                                                                               }
