@@ -3,6 +3,7 @@ package org.spbsu.mkn.scala
 import org.scalatest.funsuite.AnyFunSuite
 import org.spbsu.mkn.scala.MyGenericList.{fromSeq, size, sort, sum}
 
+import scala.annotation.tailrec
 import scala.math.Numeric.BigDecimalAsIfIntegral.mkNumericOps
 
 class MyGenericListTest extends AnyFunSuite {
@@ -47,6 +48,8 @@ class MyGenericListTest extends AnyFunSuite {
     assert(sort(MyNil: MyGenericList[String]) == MyNil)
     assert(sort(fromSeq(Seq(3,7,2,5))) == fromSeq(Seq(2,3,5,7)))
     assert(sort(fromSeq(Seq(1,2,3))) == fromSeq(Seq(1,2,3)))
+    val cmp: Ordering[Int] = (x: Int, y: Int) => scala.math.Ordering[Int].compare(x % 10, y % 10)
+    assert(sort(fromSeq(Seq(122,20001,303)))(cmp) == fromSeq(Seq(20001,122,303)))
   }
 
   test("sum") {
