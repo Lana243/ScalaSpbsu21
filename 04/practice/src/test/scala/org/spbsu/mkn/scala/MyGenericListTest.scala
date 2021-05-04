@@ -1,0 +1,60 @@
+package org.spbsu.mkn.scala
+
+import org.scalatest.funsuite.AnyFunSuite
+import org.spbsu.mkn.scala.MyGenericList.{fromSeq, size, sort, sum}
+
+import scala.annotation.tailrec
+import scala.math.Numeric.BigDecimalAsIfIntegral.mkNumericOps
+
+class MyGenericListTest extends AnyFunSuite {
+
+  test("head") {
+    assert(fromSeq(Seq(1,2,3)).head == 1)
+    assert(fromSeq(Seq(1)).head == 1)
+    assertThrows[UnsupportedOperationException](fromSeq(Seq()).head)
+  }
+
+  test("tail") {
+    assert(fromSeq(Seq(1,2,3)).tail == fromSeq(Seq(2,3)))
+    assert(fromSeq(Seq(1)).tail == MyNil)
+  }
+
+  test("drop") {
+    assert(fromSeq(Seq(1,2,3)).drop(0) == fromSeq(Seq(1,2,3)))
+    assert(fromSeq(Seq(1,2,3)).drop(2) == fromSeq(Seq(3)))
+    assert(fromSeq(Seq(1,2,3)).drop(3) == MyNil)
+    assertThrows[UnsupportedOperationException](fromSeq(Seq(1,2,3)).drop(10))
+  }
+
+  test("take") {
+    assert(fromSeq(Seq(1,2,3)).take(0) == MyNil)
+    assert(fromSeq(Seq(1,2,3)).take(2) == fromSeq(Seq(1,2)))
+    assert(fromSeq(Seq(1,2,3)).take(3) == fromSeq(Seq(1,2,3)))
+    assertThrows[UnsupportedOperationException](fromSeq(Seq(1,2,3)).take(10))
+  }
+
+  test("map") {
+    assert((MyNil : MyGenericList[Int]).map(_ * 2) == MyNil)
+    assert(fromSeq(Seq(1,2,3)).map(_ * 2) == fromSeq(Seq(2,4,6)))
+    assert(fromSeq(Seq(1,2,3)).map(identity) == fromSeq(Seq(1,2,3)))
+  }
+
+  test("size") {
+    assert(size(MyNil) == 0)
+    assert(size(fromSeq(Seq(1,2,3))) == 3)
+  }
+
+  test("sort") {
+    assert(sort(MyNil: MyGenericList[String]) == MyNil)
+    assert(sort(fromSeq(Seq(3,7,2,5))) == fromSeq(Seq(2,3,5,7)))
+    assert(sort(fromSeq(Seq(1,2,3))) == fromSeq(Seq(1,2,3)))
+    val cmp: Ordering[Int] = (x: Int, y: Int) => scala.math.Ordering[Int].compare(x % 10, y % 10)
+    assert(sort(fromSeq(Seq(122,20001,303)))(cmp) == fromSeq(Seq(20001,122,303)))
+  }
+
+  test("sum") {
+    assert(sum(MyNil: MyGenericList[Int]) == 0)
+    assert(sum(fromSeq(Seq(3,7,2,5))) == 17)
+    assert(sum(fromSeq(Seq(1,2,3))) == 6)
+  }
+}
